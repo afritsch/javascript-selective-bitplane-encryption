@@ -1,0 +1,10 @@
+body{
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+canvas{
+	outline: 5px solid #000;
+	margin: 10px;
+}
