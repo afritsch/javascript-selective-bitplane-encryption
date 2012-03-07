@@ -1,4 +1,5 @@
-var imageData;
+var modifiedImageData;
+var rawImageData; 
 
 $(document).ready(function(){
 	canvas1 = document.getElementById("canvas1");
@@ -14,38 +15,36 @@ $(document).ready(function(){
 	canvas1.height = canvas2.height = canvas3.height = img.height;
 
 	context1.drawImage(img, 0, 0);
+	console.log('drawing image 1');
+	
 	context2.drawImage(img, 0, 0);
 	context3.drawImage(img, 0, 0);
 	
-	imageData = context1.getImageData(0, 0, img.width, img.height);
-  	makeEncryption(1);
-	context2.putImageData(imageData, 0, 0, 0, 0, imageData.width, imageData.height);
-  	console.log('bild 2 fertig');
-	
-	imageData = context1.getImageData(0, 0, img.width, img.height);
+	rawImageData = modifiedImageData = context1.getImageData(0, 0, img.width, img.height);
+  makeEncryption(1);
+	context2.putImageData(modifiedImageData, 0, 0);
+  console.log('drawing image 2');
+
 	makeEncryption(4);
-	context3.putImageData(imageData, 0, 0, 0, 0, imageData.width, imageData.height);
-	console.log('bild 3 fertig');
+	context3.putImageData(modifiedImageData, 0, 0);
+	console.log('drawing image 3');
 });
 
 function makeEncryption(level) {
-	for (var i = 0; i < imageData.width*imageData.height*4; i += 4) {        
-	    var binaryR, binaryG, binaryB;
-	    
-	    binaryR = imageData.data[i].toString(2).split('');	  
-	    binaryG = imageData.data[i+1].toString(2).split('');	  
-	    binaryB = imageData.data[i+2].toString(2).split('');	 
-	    
-	    for (var j = 0; j < level; j++) {
-	      binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
-	    }
-    
-	    binaryR = binaryR.join('');
-	    binaryG = binaryG.join('');
-	    binaryB = binaryB.join('');
-	    
-	    imageData.data[i] = parseInt(binaryR, 2);
-	    imageData.data[i+1] = parseInt(binaryG, 2);
-	    imageData.data[i+2] = parseInt(binaryB, 2);
+	for(var i = 0; i < rawImageData.width*rawImageData.height*4; i += 4) {           
+		var binaryR = rawImageData.data[i].toString(2).split('');	  
+		var binaryG = rawImageData.data[i+1].toString(2).split('');	  
+		var binaryB = rawImageData.data[i+2].toString(2).split('');	 
+		
+		for (var j = 0; j < level; j++)
+			binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
+		
+		binaryR = binaryR.join('');
+		binaryG = binaryG.join('');
+		binaryB = binaryB.join('');
+		
+		modifiedImageData.data[i] = parseInt(binaryR, 2);
+		modifiedImageData.data[i+1] = parseInt(binaryG, 2);
+		modifiedImageData.data[i+2] = parseInt(binaryB, 2);
 	}
 }
