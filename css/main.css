@@ -1,10 +1,43 @@
 body{
-	width: 600px;
+	width: 1070px;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 }
+
 canvas{
 	outline: 5px solid #000;
-	margin: 10px;
+}
+
+div{
+	margin:5px;
+}
+
+#wrapper #canvas1{
+	display:none;
+}
+
+#container2{
+	width:515px;
+	float:left;
+	margin-bottom:20px;
+}
+
+#container3{
+	width:515px;
+	float:right;
+	margin-bottom:20px;
+}
+
+input[type=text]{
+	width:15px;
+}
+
+img[alt="Lenna"]{
+	position:absolute;
+	top: 20px;
+	left: 20px;
+	width:200px;
+	height:200px;
+	outline: 5px solid #000;
 }

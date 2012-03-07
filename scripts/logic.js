@@ -13,24 +13,24 @@ $(document).ready(function(){
 	$(img).attr('src', imageToDrawWith).load(function(){
 		canvas1.width = canvas2.width = canvas3.width = img.width;
 		canvas1.height = canvas2.height = canvas3.height = img.height;
-		render();
+		
+		context1.drawImage(img, 0, 0);
+		console.log('drawing image 1');
+		context2.drawImage(img, 0, 0);
+		context3.drawImage(img, 0, 0);
+		
+		render(1,4);
 	});
 });
 
-function render(){
-	context1.drawImage(img, 0, 0);
-	console.log('drawing image 1');
-	
-	context2.drawImage(img, 0, 0);
-	context3.drawImage(img, 0, 0);
-	
+function render(level1, level2){
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-  makeEncryption(1, "msb");
+  makeEncryption(level1, "msb");
 	context2.putImageData(imageData, 0, 0);
   console.log('drawing image 2');
 
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-	makeEncryption(4, "msb");
+	makeEncryption(level2, "msb");
 	context3.putImageData(imageData, 0, 0);
 	console.log('drawing image 3');
 }

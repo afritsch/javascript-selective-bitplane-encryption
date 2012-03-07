@@ -10,19 +10,39 @@
 </head>
 <body>
 	
-	<h1>Selective Bitplane Encryption</h1>
-	<div>
+	<div id="wrapper">
+		<h1>Selective Bitplane Encryption</h1>
+		<img src="images/lenna.png" alt="Lenna"/>
+		
 		<canvas id="canvas1">
 			Ihr Browser unterstützt kein HTML5.
 		</canvas>
-		<canvas id="canvas2">
-			Ihr Browser unterstützt kein HTML5.
-		</canvas>
-		<canvas id="canvas3">
-			Ihr Browser unterstützt kein HTML5.
-		</canvas>
+		
+		<div id="container2">
+			<canvas id="canvas2">
+				Ihr Browser unterstützt kein HTML5.
+			</canvas>
+			<p>
+				Anzahl der Bits <input type="text" name="value2"/>
+				MSB <input type="radio" name="significantbit2" value="msb"/>
+				LSB <input type="radio" name="significantbit2" value="lsb"/>
+				<input type="button" name="submit" value="Berechnen!" onclick=""/>
+			</p>
+		</div>
+		
+		<div id="container3">
+			<canvas id="canvas3">
+				Ihr Browser unterstützt kein HTML5.
+			</canvas>
+			<p>
+				Anzahl der Bits <input type="text" name="value3"/>
+				MSB <input type="radio" name="significantbit3" value="msb"/>
+				LSB <input type="radio" name="significantbit3" value="lsb"/>
+				<input type="button" name="submit" value="Berechnen!" onclick=""/>
+			</p>
+		</div>
+		<h3>© Andreas Fritsch und Lukas Wanko</h3>
 	</div>
-	<h3>© Andreas Fritsch und Lukas Wanko</h3>
 	
 </body>
 </html>
