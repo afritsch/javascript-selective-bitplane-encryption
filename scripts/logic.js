@@ -19,21 +19,23 @@ $(document).ready(function(){
 		context2.drawImage(img, 0, 0);
 		context3.drawImage(img, 0, 0);
 		
-
+		processImage(2, 1, "msb");
+		processImage(3, 4, "msb");
+	});
+	
+	$('input:button').click(function(){
+		var number = parseInt(this.name[6]);
+		var level = parseInt($('input[name="value' + number + '"]').val());
+  	var order = $('input:radio[name="significantbit'+number+'"]:checked').val();
+		processImage(number, level, order);
 	});
 });
 
-function processImage(context, level, order) {
-  var context = this.name[5];
-  alert("name und context: " + this.name + " " + context);
-  
+function processImage(number, level, order) {  
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-  var level = $('imput[name="value' + context + '"]').val();
-  var order = $('imput:radio[name="significantbit'+context+'"]:checked').val();
   makeEncryption(level, order);
-  
-  
-  switch(context){
+
+  switch(number){
     case 2:
       context2.putImageData(imageData, 0, 0);
       console.log('drawing image 2');
@@ -43,6 +45,7 @@ function processImage(context, level, order) {
       console.log('drawing image 3');
       break;
     default:
+    	console.log('no case found');
       break;
   }
 }
