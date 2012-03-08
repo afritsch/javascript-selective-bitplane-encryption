@@ -19,23 +19,37 @@ $(document).ready(function(){
 		context2.drawImage(img, 0, 0);
 		context3.drawImage(img, 0, 0);
 		
-		render(1,4);
+
 	});
 });
 
-function render(level1, level2){
+function processImage(context, level, order) {
+  var context = this.name[5];
+  alert("name und context: " + this.name + " " + context);
+  
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-  makeEncryption(level1, "msb");
-	context2.putImageData(imageData, 0, 0);
-  console.log('drawing image 2');
-
-	imageData = context1.getImageData(0, 0, img.width, img.height);
-	makeEncryption(level2, "msb");
-	context3.putImageData(imageData, 0, 0);
-	console.log('drawing image 3');
+  var level = $('imput[name="value' + context + '"]').val();
+  var order = $('imput:radio[name="significantbit'+context+'"]:checked').val();
+  makeEncryption(level, order);
+  
+  
+  switch(context){
+    case 2:
+      context2.putImageData(imageData, 0, 0);
+      console.log('drawing image 2');
+      break;
+    case 3:
+      context3.putImageData(imageData, 0, 0);
+      console.log('drawing image 3');
+      break;
+    default:
+      break;
+  }
 }
 
 function makeEncryption(level, order){
+  console.log('encryption start');
+
 	for(var i = 0; i < imageData.width*imageData.height*4; i += 4) {           
 		var binaryR = imageData.data[i].toString(2).split('');	  
 		var binaryG = imageData.data[i+1].toString(2).split('');	  
@@ -56,4 +70,5 @@ function makeEncryption(level, order){
 		imageData.data[i+1] = parseInt(binaryG, 2);
 		imageData.data[i+2] = parseInt(binaryB, 2);
 	}
+  console.log('encryption end');
 }
