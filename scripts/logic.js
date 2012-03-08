@@ -33,7 +33,7 @@ $(document).ready(function(){
 
 function processImage(number, level, order) {  
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-  makeEncryption(level, order);
+  makeEncryption(number, level, order);
 
   switch(number){
     case 2:
@@ -50,13 +50,19 @@ function processImage(number, level, order) {
   }
 }
 
-function makeEncryption(level, order){
+function makeEncryption(number, level, order){
   console.log('encryption start');
+	var isBlackWhite = $('input[name="sw' + number + '"]').is(":checked") ? true : false;
 
-	for(var i = 0; i < imageData.width*imageData.height*4; i += 4) {           
+	for(var i = 0; i < imageData.width*imageData.height*4; i += 4) {  
+		if(isBlackWhite){
+			var average = (imageData.data[i]+imageData.data[i+1]+imageData.data[i+2])/3;	 
+			imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = average;
+		}
+		         
 		var binaryR = imageData.data[i].toString(2).split('');	  
 		var binaryG = imageData.data[i+1].toString(2).split('');	  
-		var binaryB = imageData.data[i+2].toString(2).split('');	 
+		var binaryB = imageData.data[i+2].toString(2).split('');
 		
 		if(order == "msb")
 			for (var j = 0; j < level; j++)
