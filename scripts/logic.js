@@ -33,7 +33,7 @@ $(document).ready(function() {
   $('input:button[name*="bitplane"]').click(function() {
     var numberOfCanvas = parseInt(this.name[8]);
     var bitplaneNumber = parseInt($('input:radio[name="bitplane' + numberOfCanvas + '"]:checked').val());
-    var colorMode = parseInt($('input:radio[name="colormode' + numberOfCanvas + '"]:checked').val());
+    var colorMode = $('input:radio[name="colormode' + numberOfCanvas + '"]:checked').val();
     processImage(numberOfCanvas, 0, 0, true, bitplaneNumber, colorMode);
   });
 });
@@ -109,16 +109,17 @@ function makeBitplane(bitplaneNumber, colorMode) {
   console.log('bitplane start');
   
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-    if(color = "bw") {
+    if(colorMode == "bw") {
       var average = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
       imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = average;
       //Because every channel gets the same value so it doesn't matter where we get our bits out
-      color = "red";
+      colorMode = "red";
     }
 
     var binaryR = make8Bit(imageData.data[i].toString(2)).split("");
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split("");
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split("");
+
 
     switch(colorMode) {
       case "red":
@@ -138,6 +139,7 @@ function makeBitplane(bitplaneNumber, colorMode) {
         break;
     }
     
+
     binaryR = binaryR.join('');
     binaryG = binaryG.join('');
     binaryB = binaryB.join('');
