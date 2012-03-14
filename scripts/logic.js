@@ -1,53 +1,45 @@
 var imageData;
 var imageToDrawWith = 'images/lenna.png';
 
-$(document).ready(
-    function() {
-      canvas1 = document.getElementById("canvas1");
-      context1 = canvas1.getContext("2d");
-      canvas2 = document.getElementById("canvas2");
-      context2 = canvas2.getContext("2d");
-      canvas3 = document.getElementById("canvas3");
-      context3 = canvas3.getContext("2d");
+$(document).ready(function() {
+  canvas1 = document.getElementById("canvas1");
+  context1 = canvas1.getContext("2d");
+  canvas2 = document.getElementById("canvas2");
+  context2 = canvas2.getContext("2d");
+  canvas3 = document.getElementById("canvas3");
+  context3 = canvas3.getContext("2d");
 
-      img = new Image();
-      $(img).attr('src', imageToDrawWith).load(function() {
-        canvas1.width = canvas2.width = canvas3.width = img.width;
-        canvas1.height = canvas2.height = canvas3.height = img.height;
+  img = new Image();
+  $(img).attr('src', imageToDrawWith).load(function() {
+    canvas1.width = canvas2.width = canvas3.width = img.width;
+    canvas1.height = canvas2.height = canvas3.height = img.height;
 
-        context1.drawImage(img, 0, 0);
-        console.log('drawing image 1');
-        context2.drawImage(img, 0, 0);
-        context3.drawImage(img, 0, 0);
+    context1.drawImage(img, 0, 0);
+    console.log('drawing image 1');
+    context2.drawImage(img, 0, 0);
+    context3.drawImage(img, 0, 0);
 
-        // processImage(2, 1, "msb");
-        // processImage(3, 4, "msb");
-      });
+    // processImage(2, 1, "msb");
+    // processImage(3, 4, "msb");
+  });
 
-      $('input:button[name*="submit"]').click(
-          function() {
-            var numberOfCanvas = parseInt(this.name[6]);
-            var level = parseInt($('input[name="value' + numberOfCanvas + '"]')
-                .val());
-            var order = $(
-                'input:radio[name="significantbit' + numberOfCanvas
-                    + '"]:checked').val();
-            processImage(numberOfCanvas, level, order);
-          });
+  $('input:button[name*="submit"]').click(function() {
+    var numberOfCanvas = parseInt(this.name[6]);
+    var level = parseInt($('input[name="value' + numberOfCanvas + '"]').val());
+    var order = $('input:radio[name="significantbit' + numberOfCanvas
+        + '"]:checked').val();
+    processImage(numberOfCanvas, level, order);
+  });
 
-      $('input:button[name*="bitplane"]').click(
-          function() {
-            var numberOfCanvas = parseInt(this.name[8]);
-            var bitplaneNumber = parseInt($(
-                'input:radio[name="bitplane' + numberOfCanvas + '"]:checked')
-                .val());
-            processImage(numberOfCanvas, 0, 0, true, bitplaneNumber,
-                colorChannel);
-          });
-    });
+  $('input:button[name*="bitplane"]').click(function() {
+    var numberOfCanvas = parseInt(this.name[8]);
+    var bitplaneNumber = parseInt($('input:radio[name="bitplane'
+        + numberOfCanvas + '"]:checked').val());
+    processImage(numberOfCanvas, 0, 0, true, bitplaneNumber, colorChannel);
+  });
+});
 
-function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber,
-    colorChannel) {
+function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber, colorChannel) {
   imageData = context1.getImageData(0, 0, img.width, img.height);
   isBitplane = isBitplane ? true : false;
 
