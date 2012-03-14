@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	
@@ -16,59 +16,85 @@
 		<img src="images/lenna.png" alt="Lenna"/>
 		
 		<canvas id="canvas1">
-			Ihr Browser unterstützt kein HTML5.
+			Your Browser does not support HTML5.
 		</canvas>
 		
 		<div id="container2">
 			<canvas id="canvas2">
-				Ihr Browser unterstützt kein HTML5.
+				Your Browser does not support HTML5.
 			</canvas>
-			<p>
-				S/W <input type="checkbox" name="sw2"/>
-				Anzahl der Bits <input type="text" name="value2" value="1"/>
-				MSB <input type="radio" name="significantbit2" value="msb" checked="checked"/>
-				LSB <input type="radio" name="significantbit2" value="lsb" />
-				<input type="button" name="submit2" value="Berechnen!"/>
-			</p>
-			<p>
-				Bitplane S/W: 
-				0<input type="radio" name="bitplane2" value="0"/>
-				1<input type="radio" name="bitplane2" value="1"/>
-				2<input type="radio" name="bitplane2" value="2"/>
-				3<input type="radio" name="bitplane2" value="3"/>
-				4<input type="radio" name="bitplane2" value="4"/>
-				5<input type="radio" name="bitplane2" value="5"/>
-				6<input type="radio" name="bitplane2" value="6"/>
-				7<input type="radio" name="bitplane2" value="7"/>
-				<input type="button" name="bitplane2" value="Berechnen!"/>
-			</p>
+      <fieldset>
+        <legend>Encryption</legend>
+  			<p>
+  				B/W <input type="checkbox" name="sw2"/>
+  				Number of Bits <input type="text" name="value2" value="1"/>
+  				MSB <input type="radio" name="significantbit2" value="msb" checked="checked"/>
+  				LSB <input type="radio" name="significantbit2" value="lsb" />
+  				<input type="button" name="submit2" value="Calculate!"/>
+  			</p>
+      </fieldset>
+      <fieldset>
+        <legend>Bitplane</legend>
+  			<p>
+  				Color Mode: 
+  				Red<input type="radio" name="colormode2" value="red"/>
+  				Blue<input type="radio" name="colormode2" value="blue"/>
+  				Green<input type="radio" name="colormode2" value="green"/>
+  				B/W<input type="radio" name="colormode2" value="bw" checked="checked"/>
+  			</p>
+  			<p>
+  				Bitplane B/W: 
+  				0<input type="radio" name="bitplane2" value="0" checked="checked"/>
+  				1<input type="radio" name="bitplane2" value="1"/>
+  				2<input type="radio" name="bitplane2" value="2"/>
+  				3<input type="radio" name="bitplane2" value="3"/>
+  				4<input type="radio" name="bitplane2" value="4"/>
+  				5<input type="radio" name="bitplane2" value="5"/>
+  				6<input type="radio" name="bitplane2" value="6"/>
+  				7<input type="radio" name="bitplane2" value="7"/>
+  				<input type="button" name="bitplane2" value="Calculate!"/>
+  			</p>
+      </fieldset>
 		</div>
 		
 		<div id="container3">
 			<canvas id="canvas3">
-				Ihr Browser unterstützt kein HTML5.
+				Your Browser does not support HTML5.
 			</canvas>
-			<p>
-				S/W <input type="checkbox" name="sw3"/>
-				Anzahl der Bits <input type="text" name="value3" value="4"/>
-				MSB <input type="radio" name="significantbit3" value="msb" checked="checked"/>
-				LSB <input type="radio" name="significantbit3" value="lsb"/>
-				<input type="button" name="submit3" value="Berechnen!"/>
-			</p>
-			<p>
-				Bitplane S/W: 
-				0<input type="radio" name="bitplane3" value="0"/>
-				1<input type="radio" name="bitplane3" value="1"/>
-				2<input type="radio" name="bitplane3" value="2"/>
-				3<input type="radio" name="bitplane3" value="3"/>
-				4<input type="radio" name="bitplane3" value="4"/>
-				5<input type="radio" name="bitplane3" value="5"/>
-				6<input type="radio" name="bitplane3" value="6"/>
-				7<input type="radio" name="bitplane3" value="7"/>
-				<input type="button" name="bitplane3" value="Berechnen!"/>
-			</p>
+			<fieldset>
+        <legend>Encryption</legend>
+        <p>
+  				S/W <input type="checkbox" name="sw3"/>
+  				Number of Bits <input type="text" name="value3" value="4"/>
+  				MSB <input type="radio" name="significantbit3" value="msb" checked="checked"/>
+  				LSB <input type="radio" name="significantbit3" value="lsb"/>
+  				<input type="button" name="submit3" value="Calculate!"/>
+  			</p>
+      </fieldset>
+      <fieldset>
+        <legend>Bitplane</legend>
+        <p>
+          Color Mode: 
+          Red<input type="radio" name="colormode3" value="red"/>
+          Blue<input type="radio" name="colormode3" value="blue"/>
+          Green<input type="radio" name="colormode3" value="green"/>
+          B/W<input type="radio" name="colormode3" value="bw" checked="checked"/>
+        </p>
+  			<p>
+  				Bitplane B/W: 
+  				0<input type="radio" name="bitplane3" value="0" checked="checked"/>
+  				1<input type="radio" name="bitplane3" value="1"/>
+  				2<input type="radio" name="bitplane3" value="2"/>
+  				3<input type="radio" name="bitplane3" value="3"/>
+  				4<input type="radio" name="bitplane3" value="4"/>
+  				5<input type="radio" name="bitplane3" value="5"/>
+  				6<input type="radio" name="bitplane3" value="6"/>
+  				7<input type="radio" name="bitplane3" value="7"/>
+  				<input type="button" name="bitplane3" value="Calculate!"/>
+  			</p>
+      </fieldset>
 		</div>
-		<h3>© Andreas Fritsch und Lukas Wanko</h3>
+		<h3>� Andreas Fritsch und Lukas Wanko</h3>
 	</div>
 	
 </body>
