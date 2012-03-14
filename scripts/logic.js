@@ -38,16 +38,35 @@ function processImage(number, level, order) {
   switch(number){
     case 2:
       context2.putImageData(imageData, 0, 0);
-      console.log('drawing image 2');
+      console.log('drawn image 2');
       break;
     case 3:
       context3.putImageData(imageData, 0, 0);
-      console.log('drawing image 3');
+      console.log('drawn image 3');
       break;
     default:
     	console.log('no case found');
       break;
   }
+}
+
+function make8Bit(binaryString){
+	for(var i=0; 8-binaryString.length; i++)
+		binaryString = "0" + binaryString;
+	return binaryString;
+}
+
+function createBitPlane(){
+		//TODO till is function doesn't work
+		var bitplaneNumber = 0;
+		if(binaryR[bitplaneNumber] == "0"){
+			for (var j = 0; j < 8; j++)
+				binaryR[j] = binaryG[j] = binaryB[j] = 0;
+		}
+		else{
+			for (var j = 0; j < 8; j++)
+				binaryR[j] = binaryG[j] = binaryB[j] = 1;
+		}
 }
 
 function makeEncryption(number, level, order){
@@ -59,11 +78,11 @@ function makeEncryption(number, level, order){
 			var average = (imageData.data[i]+imageData.data[i+1]+imageData.data[i+2])/3;	 
 			imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = average;
 		}
-		         
-		var binaryR = imageData.data[i].toString(2).split('');	  
-		var binaryG = imageData.data[i+1].toString(2).split('');	  
-		var binaryB = imageData.data[i+2].toString(2).split('');
 		
+		var binaryR = make8Bit(imageData.data[i].toString(2)).split("");	  
+		var binaryG = make8Bit(imageData.data[i+1].toString(2)).split("");	  
+		var binaryB = make8Bit(imageData.data[i+2].toString(2)).split("");
+
 		if(order == "msb")
 			for (var j = 0; j < level; j++)
 				binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
