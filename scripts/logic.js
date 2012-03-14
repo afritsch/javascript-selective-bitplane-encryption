@@ -33,15 +33,26 @@ $(document).ready(function(){
 	$('input:button[name*="bitplane"]').click(function(){
 		var numberOfCanvas = parseInt(this.name[8]);
 		var bitplaneNumber = parseInt($('input:radio[name="bitplane' + numberOfCanvas + '"]:checked').val());
-		console.log(numberOfCanvas + " " + bitplaneNumber);
-		processImage(numberOfCanvas, 0, 0, true)
+		processImage(numberOfCanvas, 0, 0, true, bitplaneNumber);
 	});
 });
 
-function processImage(numberOfCanvas, level, order) {  
+function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber) {  
 	imageData = context1.getImageData(0, 0, img.width, img.height);
-  makeEncryption(numberOfCanvas, level, order);
+	isBitplane = isBitplane ? true : false;
 
+	switch(isBitplane){
+		case true:
+			makeBitplane(bitplaneNumber);
+			break;
+		case false:
+  		makeEncryption(numberOfCanvas, level, order);
+  		break;
+		default:
+			console.log("Can not parse isBitplane: " + isBitplane);
+			break;
+	}
+	
   switch(numberOfCanvas){
     case 2:
       context2.putImageData(imageData, 0, 0);
@@ -52,7 +63,7 @@ function processImage(numberOfCanvas, level, order) {
       console.log('drawn image 3');
       break;
     default:
-    	console.log('no case found');
+    	console.log('Can not find the right canvas!');
       break;
   }
 }
@@ -96,8 +107,9 @@ function makeEncryption(numberOfCanvas, level, order){
 }
 function makeBitplane(bitplaneNumber, color){
   console.log('bitplane start');
-  var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(":checked") ? true : false;
+  //var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(":checked") ? true : false;
 
+	isBlackWhite = true;
 	for(var i = 0; i < imageData.width*imageData.height*4; i += 4) {  
 		if(isBlackWhite){
 			var average = (imageData.data[i]+imageData.data[i+1]+imageData.data[i+2])/3;	 
@@ -108,14 +120,9 @@ function makeBitplane(bitplaneNumber, color){
 		var binaryG = make8Bit(imageData.data[i+1].toString(2)).split("");	  
 		var binaryB = make8Bit(imageData.data[i+2].toString(2)).split("");
 
-		if(binaryR[number] == "0"){
-			for (var j = 0; j < 8; j++)
-				binaryR[j] = binaryG[j] = binaryB[j] = 0;
-		}
-		else{
-			for (var j = 0; j < 8; j++)
-				binaryR[j] = binaryG[j] = binaryB[j] = 1;
-		}
+		//only when having black/white
+		for(var j = 0; j < 8; j++)
+			binaryR[j] = binaryG[j] = binaryB[j] = binaryR[bitplaneNumber];
 		
 		binaryR = binaryR.join('');
 		binaryG = binaryG.join('');
@@ -125,5 +132,5 @@ function makeBitplane(bitplaneNumber, color){
 		imageData.data[i+1] = parseInt(binaryG, 2);
 		imageData.data[i+2] = parseInt(binaryB, 2);
 	}
-  console.log('encryption end');
+  console.log('bitplane end');
 }
