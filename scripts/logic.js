@@ -18,9 +18,6 @@ $(document).ready(function() {
     console.log('drawing image 1');
     context2.drawImage(img, 0, 0);
     context3.drawImage(img, 0, 0);
-
-    // processImage(2, 1, "msb");
-    // processImage(3, 4, "msb");
   });
 
   $('input:button[name*="submit"]').click(function() {
@@ -36,7 +33,28 @@ $(document).ready(function() {
     var colorMode = $('input:radio[name="colormode' + numberOfCanvas + '"]:checked').val();
     processImage(numberOfCanvas, 0, 0, true, bitplaneNumber, colorMode);
   });
+  
+  $('input:button[name*="replacementAttack"]').click(function() {
+    var numberOfCanvas = parseInt(this.name[17]);
+    var bitplaneNumber = parseInt($('input:radio[name="replacementAttackBitplane' + numberOfCanvas + '"]:checked').val());
+    var replacementAttackMode = $('input:radio[name="replacementAttackMode' + numberOfCanvas + '"]:checked').val();
+    replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode);
+  });
 });
+
+function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode){
+	switch(numberOfCanvas){
+		case 2:
+		  imageData = context2.getImageData(0, 0, img.width, img.height);
+			break;
+		case 3:
+			imageData = context3.getImageData(0, 0, img.width, img.height);
+			break;
+		default:
+			break;
+	}
+
+}
 
 function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber, colorMode) {
   imageData = context1.getImageData(0, 0, img.width, img.height);
@@ -77,6 +95,12 @@ function make8Bit(binaryString) {
 
 function makeEncryption(numberOfCanvas, level, order) {
   console.log('encryption start');
+  
+  //AES key generation
+	var key = new Array(128);
+	for(var i = 0; i < 32; i++)
+	  key[i] = i;
+  
 	var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(":checked") ? true : false;
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     if(isBlackWhite) {
@@ -94,6 +118,7 @@ function makeEncryption(numberOfCanvas, level, order) {
     else if(order == "lsb")
       for( var j = 7; j >= 8 - level; j--)
         binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
+        
 
     binaryR = binaryR.join('');
     binaryG = binaryG.join('');
@@ -121,7 +146,6 @@ function makeBitplane(bitplaneNumber, colorMode) {
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split("");
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split("");
 
-
     switch(colorMode) {
       case "red":
         for( var j = 0; j < 8; j++)
@@ -140,7 +164,6 @@ function makeBitplane(bitplaneNumber, colorMode) {
         break;
     }
     
-
     binaryR = binaryR.join('');
     binaryG = binaryG.join('');
     binaryB = binaryB.join('');
