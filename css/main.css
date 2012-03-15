@@ -47,6 +47,7 @@ img[alt="Lenna"]{
 fieldset{
 		background: -moz-linear-gradient(top, #eee, #fff);
 		margin:10px;
-		-moz-border-radius: 8px;
-		-o-border-radius: 8px;
+		-moz-border-radius: 5px;
+		-o-border-radius: 5px;
+		box-shadow:2px 2px 2px #eee;
 }
