@@ -3,6 +3,8 @@ body{
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
+	font-family: Verdana;
+	font-size:12px;
 }
 
 canvas{
@@ -40,4 +42,11 @@ img[alt="Lenna"]{
 	width:200px;
 	height:200px;
 	outline: 5px solid #000;
+}
+
+fieldset{
+		background: -moz-linear-gradient(top, #eee, #fff);
+		margin:10px;
+		-moz-border-radius: 8px;
+		-o-border-radius: 8px;
 }

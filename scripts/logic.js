@@ -77,6 +77,7 @@ function make8Bit(binaryString) {
 
 function makeEncryption(numberOfCanvas, level, order) {
   console.log('encryption start');
+	var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(":checked") ? true : false;
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     if(isBlackWhite) {
       var average = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
