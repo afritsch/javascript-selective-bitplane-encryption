@@ -134,13 +134,11 @@ function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode
         }
 				
 				console.log(average);
+				console.log(average.toString(2));
+				return;   
+				
         average = make8Bit(average.toString(2)).split("");
         binaryR[bitplaneNumber] = binaryG[bitplaneNumber] = binaryB[bitplaneNumber] = average[bitplaneNumber]; 
-        console.log(average);
-        console.log(average[bitplaneNumber]);
-          
-        return;   
-          
         break;
       case '1':
         binaryR[bitplaneNumber] = binaryG[bitplaneNumber] = binaryB[bitplaneNumber] = 1;
