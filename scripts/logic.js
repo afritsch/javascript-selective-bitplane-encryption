@@ -43,7 +43,7 @@ $(document).ready(function() {
 });
 
 function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode) {
-  switch(numberOfCanvas) {
+  switch(numberOfCanvas){
     case 2:
       imageData = context2.getImageData(0, 0, img.width, img.height);
       break;
@@ -136,13 +136,19 @@ function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode
         return;
     }
     
-    binaryR = binaryR.join('');
-    binaryG = binaryG.join('');
-    binaryB = binaryB.join('');
+    binaryR = parseInt(binaryR.join(''), 2);
+    binaryG = parseInt(binaryG.join(''), 2);
+    binaryB = parseInt(binaryB.join(''), 2);
 
-    imageData.data[i] = parseInt(binaryR, 2);
-    imageData.data[i + 1] = parseInt(binaryG, 2);
-    imageData.data[i + 2] = parseInt(binaryB, 2);
+    if(replacementAttackMode == 0 || replacementAttackMode == 1){
+			var luminanceCalculation = replacementAttackMode ? +1 : -1;
+			var exponent = 7 - bitplaneNumber * (-1);
+			binaryR = binaryG = binaryB = Math.pow(2, exponent)/2 * luminanceCalculation + binaryR;
+		}
+		
+    imageData.data[i] = binaryR;
+    imageData.data[i + 1] = binaryG;
+    imageData.data[i + 2] = binaryB;
   }
   
   switch(numberOfCanvas) {
