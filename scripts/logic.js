@@ -40,13 +40,24 @@ $(document).ready(function() {
   
   $('input:button[name*="replacementAttack"]').click(function() {
     var numberOfCanvas = parseInt(this.name[17]);
-    var bitplaneNumber = parseInt($('input:radio[name="replacementAttackBitplane' + numberOfCanvas + '"]:checked').val());
+    var selectedBits = new Array();
+    for(var i = 0; i < 8 ; i++){
+      if( $('input[name="' + numberOfCanvas + 'replacementAttackBitplane' + i + '"]').is(':checked') ){
+        selectedBits.push(i);
+      }
+    }
+    
+    if(!selectedBits.length){
+    	alert("Please choose a bitplane to replace!");
+    	return;
+    }
+    
     var replacementAttackMode = $('input:radio[name="replacementAttackMode' + numberOfCanvas + '"]:checked').val();
-    replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode);
+    replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode);
    });
 });
 
-function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode) {
+function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) {
   switch(numberOfCanvas){
     case 2:
       imageData = context2.getImageData(0, 0, img.width, img.height);
@@ -58,96 +69,107 @@ function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode
       console.log('Replacement Attack invalid canvas number!');
       break;
   }
-
+	
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     var binaryR = make8Bit(imageData.data[i].toString(2)).split('');
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 		var average;
-		
-    switch(replacementAttackMode) {
-      case 'neighbour':
-      	if(i == 0){        													//top-left
-      		average = (imageData.data[i+4]+
-            imageData.data[i+imageData.width*4+4]+
-            imageData.data[i+imageData.width+4])/3;
-      	}
-      	else if(i <= imageData.width*4 - 4){      	//top
-        	average = (imageData.data[i-4]+
-            imageData.data[i+4]+
-            imageData.data[i+imageData.width*4]+
-            imageData.data[i+imageData.width*4-4]+
-            imageData.data[i+imageData.width*4+4])/5;
-      	}
-      	else if(i == imageData.width*4){						//top-right
-        	average = (imageData.data[i-4]+
-            imageData.data[i+imageData.width*4]+
-            imageData.data[i+imageData.width*4-4])/3;
-      	}
-      	else if(i == imageData.width*imageData.height*4-imageData.width*4+4){     //bottom-left
-      		average = (imageData.data[i+4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i-imageData.width*4+4])/3;
-      	}
-      	else if(i == imageData.width*imageData.height*4-4){      									//bottom-right
-      		average = (imageData.data[i-4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i-imageData.width*4-4])/3;
-      	}
-      	else if(i > imageData.width*imageData.height*4-imageData.width*4){      	//bottom
-      		average = (imageData.data[i-4]+
-            imageData.data[i+4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i-imageData.width*4-4]+
-            imageData.data[i-imageData.width*4+4])/5;
-      	}
-      	else if(i%(imageData.width*4+4) == 0){      	//left
-        	average = (imageData.data[i+4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i+imageData.width*4*4]+
-            imageData.data[i+imageData.width*4+4]+
-            imageData.data[i-imageData.width*4+4])/5;
-      	}
-      	else if(i%(imageData.width*4) == 0){      		//right
-        	average = (imageData.data[i-4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i+imageData.width*4]+
-            imageData.data[i+imageData.width*4-4]+
-            imageData.data[i-imageData.width*4-4])/5;
-      	}
-      	else{          																//middle
-      		average = (imageData.data[i-4]+
-            imageData.data[i+4]+
-            imageData.data[i-imageData.width*4]+
-            imageData.data[i+imageData.width*4]+
-            imageData.data[i+imageData.width*4-4]+
-            imageData.data[i+imageData.width*4+4]+
-            imageData.data[i-imageData.width*4-4]+
-            imageData.data[i-imageData.width*4+4])/8;
-        }
+		var luminanceCorrection = 0;
 
-        average = make8Bit(Math.round(average).toString(2)).split("");
-        binaryR[bitplaneNumber] = binaryG[bitplaneNumber] = binaryB[bitplaneNumber] = average[bitplaneNumber]; 
-        break;
-      case '1':
-        binaryR[bitplaneNumber] = binaryG[bitplaneNumber] = binaryB[bitplaneNumber] = 1;
-        break;
-      case '0':
-        binaryR[bitplaneNumber] = binaryG[bitplaneNumber] = binaryB[bitplaneNumber] = 0;
-        break;
-      default:
-        console.log('Invalid Replacement Mode!');
-        return;
-    }
+		for(var j = 0; j < selectedBits.length; j++){
+			var bitplane = 7-parseInt(selectedBits[j]);
+
+	    switch(replacementAttackMode) {
+	      case 'neighbour':
+	      	if(i == 0){        													//top-left
+	      		average = (imageData.data[i+4]+
+	            imageData.data[i+imageData.width*4+4]+
+	            imageData.data[i+imageData.width+4])/3;
+	      	}
+	      	else if(i <= imageData.width*4 - 4){      	//top
+	        	average = (imageData.data[i-4]+
+	            imageData.data[i+4]+
+	            imageData.data[i+imageData.width*4]+
+	            imageData.data[i+imageData.width*4-4]+
+	            imageData.data[i+imageData.width*4+4])/5;
+	      	}
+	      	else if(bitplane == imageData.width*4){						//top-right
+	        	average = (imageData.data[i-4]+
+	            imageData.data[i+imageData.width*4]+
+	            imageData.data[i+imageData.width*4-4])/3;
+	      	}
+	      	else if(i == imageData.width*imageData.height*4-imageData.width*4+4){     //bottom-left
+	      		average = (imageData.data[i+4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i-imageData.width*4+4])/3;
+	      	}
+	      	else if(i == imageData.width*imageData.height*4-4){      									//bottom-right
+	      		average = (imageData.data[i-4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i-imageData.width*4-4])/3;
+	      	}
+	      	else if(i > imageData.width*imageData.height*4-imageData.width*4){      	//bottom
+	      		average = (imageData.data[i-4]+
+	            imageData.data[i+4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i-imageData.width*4-4]+
+	            imageData.data[i-imageData.width*4+4])/5;
+	      	}
+	      	else if(i%(imageData.width*4+4) == 0){      	//left
+	        	average = (imageData.data[i+4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i+imageData.width*4*4]+
+	            imageData.data[i+imageData.width*4+4]+
+	            imageData.data[i-imageData.width*4+4])/5;
+	      	}
+	      	else if(i%(imageData.width*4) == 0){      		//right
+	        	average = (imageData.data[i-4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i+imageData.width*4]+
+	            imageData.data[i+imageData.width*4-4]+
+	            imageData.data[i-imageData.width*4-4])/5;
+	      	}
+	      	else{          																//middle
+	      		average = (imageData.data[i-4]+
+	            imageData.data[i+4]+
+	            imageData.data[i-imageData.width*4]+
+	            imageData.data[i+imageData.width*4]+
+	            imageData.data[i+imageData.width*4-4]+
+	            imageData.data[i+imageData.width*4+4]+
+	            imageData.data[i-imageData.width*4-4]+
+	            imageData.data[i-imageData.width*4+4])/8;
+	        }
+	
+	        average = make8Bit(Math.round(average).toString(2)).split("");
+	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = average[bitplane]; 
+	        break;
+	      case '1':
+	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = 1;
+	        luminanceCorrection += Math.pow(2, bitplane)/2;
+	        break;
+	      case '0':
+	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = 0;
+	        luminanceCorrection += Math.pow(2, bitplane)/2;
+	        break;
+	      default:
+	        console.log('Invalid Replacement Mode!');
+	        return;
+	    }
+	  }
     
     binaryR = parseInt(binaryR.join(''), 2);
     binaryG = parseInt(binaryG.join(''), 2);
     binaryB = parseInt(binaryB.join(''), 2);
 
+		//adding the lumiance value of the hole picture to the result of the replacementattack
     if(replacementAttackMode == 0 || replacementAttackMode == 1){
-			var luminanceCalculation = replacementAttackMode ? +1 : -1;
-			var exponent = 7 - bitplaneNumber * (-1);
-			binaryR = binaryG = binaryB = Math.pow(2, exponent)/2 * luminanceCalculation + binaryR;
+			if(!replacementAttackMode)
+				luminanceCorrection*=-1;
+
+			binaryR += luminanceCorrection; 
+			binaryG += luminanceCorrection;
+			binaryB += luminanceCorrection;
 		}
 		
     imageData.data[i] = binaryR;
@@ -226,12 +248,11 @@ function makeEncryption(numberOfCanvas, selectedBits) {
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 
-    for(var i = 0; i < selectedBits.length; i++){
-      var bitplane = parseInt(selectedBits[i]);
+    for(var j = 0; j < selectedBits.length; j++){
+      var bitplane = 7-parseInt(selectedBits[j]);
       binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = Math.round(Math.random());
     }
 
-    
     binaryR = binaryR.join('');
     binaryG = binaryG.join('');
     binaryB = binaryB.join('');
@@ -262,18 +283,18 @@ function makeBitplane(bitplaneNumber, colorMode) {
     switch(colorMode) {
       case 'red':
         for( var j = 0; j < 8; j++)
-          binaryR[j] = binaryG[j] = binaryB[j] = binaryR[bitplaneNumber];
+          binaryR[j] = binaryG[j] = binaryB[j] = binaryR[7-bitplaneNumber];
         break;
       case 'green':
         for( var j = 0; j < 8; j++)
-          binaryR[j] = binaryG[j] = binaryB[j] = binaryG[bitplaneNumber];
+          binaryR[j] = binaryG[j] = binaryB[j] = binaryG[7-bitplaneNumber];
         break;
       case 'blue':
         for( var j = 0; j < 8; j++)
-          binaryR[j] = binaryG[j] = binaryB[j] = binaryB[bitplaneNumber];
+          binaryR[j] = binaryG[j] = binaryB[j] = binaryB[7-bitplaneNumber];
         break;
       default:
-        console.log('Can´t find color!');
+        console.log('Can\'t find color!');
         break;
     }
 
