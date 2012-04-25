@@ -2,12 +2,12 @@ var imageData;
 var imageToDrawWith = 'images/lenna.png';
 
 $(document).ready(function() {
-  canvas1 = document.getElementById("canvas1");
-  context1 = canvas1.getContext("2d");
-  canvas2 = document.getElementById("canvas2");
-  context2 = canvas2.getContext("2d");
-  canvas3 = document.getElementById("canvas3");
-  context3 = canvas3.getContext("2d");
+  canvas1 = document.getElementById('canvas1');
+  context1 = canvas1.getContext('2d');
+  canvas2 = document.getElementById('canvas2');
+  context2 = canvas2.getContext('2d');
+  canvas3 = document.getElementById('canvas3');
+  context3 = canvas3.getContext('2d');
   
   img = new Image();
   $(img).attr('src', imageToDrawWith).load(function() {
@@ -56,9 +56,9 @@ function replacementAttack(numberOfCanvas, bitplaneNumber, replacementAttackMode
   }
 
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-    var binaryR = make8Bit(imageData.data[i].toString(2)).split("");
-    var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split("");
-    var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split("");
+    var binaryR = make8Bit(imageData.data[i].toString(2)).split('');
+    var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
+    var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 		var average;
 		
     switch(replacementAttackMode) {
@@ -178,7 +178,7 @@ function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber, 
       makeEncryption(numberOfCanvas, level, order);
       break;
     default:
-      console.log("Can not parse isBitplane: " + isBitplane);
+      console.log('Can not parse isBitplane: ' + isBitplane);
       break;
   }
 
@@ -199,7 +199,7 @@ function processImage(numberOfCanvas, level, order, isBitplane, bitplaneNumber, 
 
 function make8Bit(binaryString) {
   for( var i = 0; 8 - binaryString.length; i++)
-    binaryString = "0" + binaryString;
+    binaryString = '0' + binaryString;
   return binaryString;
 }
 
@@ -211,23 +211,23 @@ function makeEncryption(numberOfCanvas, level, order) {
   //for( var i = 0; i < 32; i++)
     //key[i] = i;
 
-  var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(":checked") ? true : false;
+  var isBlackWhite = $('input[name="sw' + numberOfCanvas + '"]').is(':checked') ? true : false;
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     if(isBlackWhite) {
       var average = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
       imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = average;
     }
 
-    var binaryR = make8Bit(imageData.data[i].toString(2)).split("");
-    var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split("");
-    var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split("");
+    var binaryR = make8Bit(imageData.data[i].toString(2)).split('');
+    var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
+    var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 
-    if(order == "msb"){
+    if(order == 'msb'){
       for( var j = 0; j < level; j++) {
         binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
       }
     }
-    else if(order == "lsb"){
+    else if(order == 'lsb'){
       for( var j = 7; j >= 8 - level; j--){
         binaryR[j] = binaryG[j] = binaryB[j] = Math.round(Math.random());
       }
@@ -248,12 +248,12 @@ function makeBitplane(bitplaneNumber, colorMode) {
   console.log('bitplane start');
 
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-    if(colorMode == "bw") {
+    if(colorMode == 'bw') {
       var average = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
       imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = average;
       // Because every channel gets the same value so it doesn't matter where we
       // get our bits out
-      colorMode = "red";
+      colorMode = 'red';
     }
 
     var binaryR = make8Bit(imageData.data[i].toString(2)).split("");
@@ -261,20 +261,20 @@ function makeBitplane(bitplaneNumber, colorMode) {
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split("");
 
     switch(colorMode) {
-      case "red":
+      case 'red':
         for( var j = 0; j < 8; j++)
           binaryR[j] = binaryG[j] = binaryB[j] = binaryR[bitplaneNumber];
         break;
-      case "green":
+      case 'green':
         for( var j = 0; j < 8; j++)
           binaryR[j] = binaryG[j] = binaryB[j] = binaryG[bitplaneNumber];
         break;
-      case "blue":
+      case 'blue':
         for( var j = 0; j < 8; j++)
           binaryR[j] = binaryG[j] = binaryB[j] = binaryB[bitplaneNumber];
         break;
       default:
-        console.log("Can't find color!");
+        console.log('Can´t find color!');
         break;
     }
 
