@@ -48,7 +48,7 @@ $(document).ready(function() {
     }
     
     if(!selectedBits.length){
-    	alert("Please choose a bitplane to replace!");
+    	alert('Please choose a bitplane to replace!');
     	return;
     }
     
@@ -141,7 +141,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
 	            imageData.data[i-imageData.width*4+4])/8;
 	        }
 	
-	        average = make8Bit(Math.round(average).toString(2)).split("");
+	        average = make8Bit(Math.round(average).toString(2)).split('');
 	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = average[bitplane]; 
 	        break;
 	      case '1':
@@ -166,7 +166,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
     if(replacementAttackMode == 0 || replacementAttackMode == 1){
 			if(!replacementAttackMode)
 				luminanceCorrection*=-1;
-
+			
 			binaryR += luminanceCorrection; 
 			binaryG += luminanceCorrection;
 			binaryB += luminanceCorrection;
