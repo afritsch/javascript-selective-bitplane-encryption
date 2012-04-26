@@ -69,9 +69,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
       console.log('Replacement Attack invalid canvas number!');
       break;
   }
-	
-	var lumArray = [];
-	
+
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     var binaryR = make8Bit(imageData.data[i].toString(2)).split('');
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
@@ -170,10 +168,8 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
       
 			if(!replacementAttackMode){
 				luminanceCorrection*=-1;
-				lumArray.push("b");
 			}
 
-			lumArray.push(luminanceCorrection);
 			binaryR += luminanceCorrection; 
 			binaryG += luminanceCorrection;
 			binaryB += luminanceCorrection;
@@ -183,8 +179,6 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
     imageData.data[i + 1] = binaryG;
     imageData.data[i + 2] = binaryB;
   }
-
-	console.log(lumArray);
   
   switch(numberOfCanvas) {
     case 2:
