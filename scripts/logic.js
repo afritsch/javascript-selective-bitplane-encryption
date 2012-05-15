@@ -75,6 +75,8 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
     var binaryG = make8Bit(imageData.data[i + 1].toString(2)).split('');
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 		var average;
+		var windowAverage = 0;
+		Array windowDifferences;
 		var luminanceCorrection = 0;
 
 		for(var j = 0; j < selectedBits.length; j++){
@@ -144,6 +146,33 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
 	
 	        average = make8Bit(Math.round(average).toString(2)).split('');
 	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = average[bitplane]; 
+	        break;
+	      case 'reconstruction':
+	        //TODO
+	        // set values to 0 0 0 0
+	        // back to decimal
+	        // calculate average
+	        // save average of configuration
+	        // same for other configurations
+	        // 
+	        /* 0 0  Set 0
+	         * 0 0
+	         */
+	        
+	        binaryR[bitplane] = 0;
+	        binaryG[bitplane] = 0;
+	        binaryB[bitplane] = 0;
+	        
+	        // same for every window except windowDiffereces index
+	        windowAveragerage = (imageData.data[i]+
+	            imageData.data[i+4]+
+	            imageData.data[i+imageData.width*4]+
+	            imageData.data[i+imageData.width*4+4]
+	            )/4;
+	        windowDifferences[0] = Math.abs(windowAverage-imageData.data[i])+
+	        Math.abs(windowAverage-imageData.data[i+4])+
+	        Math.abs(windowAverage-imageData.data[i+imageData.width*4])+
+	        Math.abs(windowAverage-imageData.data[i+imageData.width*4+4]);
 	        break;
 	      case '1':
 	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = 1;
