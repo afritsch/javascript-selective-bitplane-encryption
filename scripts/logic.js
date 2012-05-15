@@ -166,7 +166,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
 		//adding the lumiance value of the hole picture to the result of the replacementattack
     if(replacementAttackMode == 0 || replacementAttackMode == 1){
       
-			if(!replacementAttackMode){
+			if(parseInt(replacementAttackMode)){
 				luminanceCorrection*=-1;
 			}
 
