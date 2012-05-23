@@ -69,6 +69,13 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
       console.log('Replacement Attack invalid canvas number!');
       break;
   }
+  
+  var reconstructionSchemes = new Array();
+  for(var i=0; i<16; i++){
+    var bitValue = i.toString(2);
+    var bits = make4Bit(bitValue).toInt().split('');
+    reconstructionSchemes.push();
+  }
 
   for( var i = 0; i < imageData.width * imageData.height * 4; i += 4) {
     var binaryR = make8Bit(imageData.data[i].toString(2)).split('');
@@ -76,7 +83,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
     var binaryB = make8Bit(imageData.data[i + 2].toString(2)).split('');
 		var average;
 		var windowAverage = 0;
-		Array windowDifferences;
+		var windowDifferences = new Array();
 		var luminanceCorrection = 0;
 
 		for(var j = 0; j < selectedBits.length; j++){
@@ -158,21 +165,51 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
 	        /* 0 0  Set 0
 	         * 0 0
 	         */
+	        var minDifference = 1024;
+	        var testValue = 0;
+	        var minIndex = 0;
 	        
-	        binaryR[bitplane] = 0;
-	        binaryG[bitplane] = 0;
-	        binaryB[bitplane] = 0;
+	        for(var k = 0; k < 16; k++) {
+	          var firstPx = make8Bit(imageData.data[i].toString(2)).split('');
+	          firstPx[bitplane] = reconstructionSchemes[k][0];
+	          var secondPx = make8Bit(imageData.data[i+4].toString(2)).split('');
+	          secondPx[bitplane] = reconstructionSchemes[k][1]; 
+	          var thirdPx = make8Bit(imageData.data[i+imageData.width*4].toString(2)).split(''); 
+	          thirdPx[bitplane] = reconstructionSchemes[k][2]; 
+	          var fourthPx = make8Bit(imageData.data[i+imageData.width*4+4].toString(2)).split('');
+	          fourthPx[bitplane] = reconstructionSchemes[k][3]; 
+	          
+	          windowAverage = (parseInt(firstPx.join(''), 2)+
+	              parseInt(secondPx.join(''), 2)+
+	              parseInt(thirdPx.join(''), 2)+
+	              parseInt(fourthPx.join(''), 2)
+	              )/4;
+	          
+	          testValue = Math.abs(windowAverage-imageData.data[i])+
+	          Math.abs(windowAverage-imageData.data[i+4])+
+	          Math.abs(windowAverage-imageData.data[i+imageData.width*4])+
+	          Math.abs(windowAverage-imageData.data[i+imageData.width*4+4]);
+	           
+	          if(testValue < minDifference) {
+	            minDifference = testValue;
+	            minIndex = k;
+	          }
+          }
 	        
-	        // same for every window except windowDiffereces index
-	        windowAveragerage = (imageData.data[i]+
-	            imageData.data[i+4]+
-	            imageData.data[i+imageData.width*4]+
-	            imageData.data[i+imageData.width*4+4]
-	            )/4;
-	        windowDifferences[0] = Math.abs(windowAverage-imageData.data[i])+
-	        Math.abs(windowAverage-imageData.data[i+4])+
-	        Math.abs(windowAverage-imageData.data[i+imageData.width*4])+
-	        Math.abs(windowAverage-imageData.data[i+imageData.width*4+4]);
+          var firstPx = make8Bit(imageData.data[i].toString(2)).split('');
+          firstPx[bitplane] = reconstructionSchemes[minIndex][0];
+          var secondPx = make8Bit(imageData.data[i+4].toString(2)).split('');
+          secondPx[bitplane] = reconstructionSchemes[minIndex][1]; 
+          var thirdPx = make8Bit(imageData.data[i+imageData.width*4].toString(2)).split(''); 
+          thirdPx[bitplane] = reconstructionSchemes[minIndex][2]; 
+          var fourthPx = make8Bit(imageData.data[i+imageData.width*4+4].toString(2)).split('');
+          fourthPx[bitplane] = reconstructionSchemes[minIndex][3]; 
+	        
+          imageData.data[i] = parseInt(firstPx.join(''), 2);
+          imageData.data[i+4] = parseInt(secondPx.join(''), 2);
+          imageData.data[i+imageData.width*4] = parseInt(thirdPx.join(''), 2);
+          imageData.data[i+imageData.width*4+4] = parseInt(fourthPx.join(''), 2);
+	        
 	        break;
 	      case '1':
 	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = 1;
@@ -257,6 +294,12 @@ function processImage(numberOfCanvas, selectedBits, isBitplane, bitplaneNumber, 
 
 function make8Bit(binaryString) {
   for( var i = 0; 8 - binaryString.length; i++)
+    binaryString = '0' + binaryString;
+  return binaryString;
+}
+
+function make4Bit(binaryString) {
+  for( var i = 0; 4 - binaryString.length; i++)
     binaryString = '0' + binaryString;
   return binaryString;
 }
