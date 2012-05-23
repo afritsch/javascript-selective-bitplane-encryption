@@ -209,7 +209,8 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
           imageData.data[i+4] = parseInt(secondPx.join(''), 2);
           imageData.data[i+imageData.width*4] = parseInt(thirdPx.join(''), 2);
           imageData.data[i+imageData.width*4+4] = parseInt(fourthPx.join(''), 2);
-	        
+          
+          i+=4;	        
 	        break;
 	      case '1':
 	        binaryR[bitplane] = binaryG[bitplane] = binaryB[bitplane] = 1;
