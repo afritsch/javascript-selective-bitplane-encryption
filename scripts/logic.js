@@ -73,7 +73,7 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
   var reconstructionSchemes = new Array();
   for(var i=0; i<16; i++){
     var bitValue = i.toString(2);
-    var bits = make4Bit(bitValue).toInt().split('');
+    var bits = make4Bit(bitValue).split('');
     reconstructionSchemes.push();
   }
 
@@ -171,13 +171,13 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
 	        
 	        for(var k = 0; k < 16; k++) {
 	          var firstPx = make8Bit(imageData.data[i].toString(2)).split('');
-	          firstPx[bitplane] = reconstructionSchemes[k][0];
+	          firstPx[bitplane] = parseInt(reconstructionSchemes[k][0]);
 	          var secondPx = make8Bit(imageData.data[i+4].toString(2)).split('');
-	          secondPx[bitplane] = reconstructionSchemes[k][1]; 
+	          secondPx[bitplane] = parseInt(reconstructionSchemes[k][1]);
 	          var thirdPx = make8Bit(imageData.data[i+imageData.width*4].toString(2)).split(''); 
-	          thirdPx[bitplane] = reconstructionSchemes[k][2]; 
+	          thirdPx[bitplane] = parseInt(reconstructionSchemes[k][2]); 
 	          var fourthPx = make8Bit(imageData.data[i+imageData.width*4+4].toString(2)).split('');
-	          fourthPx[bitplane] = reconstructionSchemes[k][3]; 
+	          fourthPx[bitplane] = parseInt(reconstructionSchemes[k][3]); 
 	          
 	          windowAverage = (parseInt(firstPx.join(''), 2)+
 	              parseInt(secondPx.join(''), 2)+
@@ -197,13 +197,13 @@ function replacementAttack(numberOfCanvas, selectedBits, replacementAttackMode) 
           }
 	        
           var firstPx = make8Bit(imageData.data[i].toString(2)).split('');
-          firstPx[bitplane] = reconstructionSchemes[minIndex][0];
+          firstPx[bitplane] = parseInt(reconstructionSchemes[minIndex][0]);
           var secondPx = make8Bit(imageData.data[i+4].toString(2)).split('');
-          secondPx[bitplane] = reconstructionSchemes[minIndex][1]; 
+          secondPx[bitplane] = parseInt(reconstructionSchemes[minIndex][1]); 
           var thirdPx = make8Bit(imageData.data[i+imageData.width*4].toString(2)).split(''); 
-          thirdPx[bitplane] = reconstructionSchemes[minIndex][2]; 
+          thirdPx[bitplane] = parseInt(reconstructionSchemes[minIndex][2]); 
           var fourthPx = make8Bit(imageData.data[i+imageData.width*4+4].toString(2)).split('');
-          fourthPx[bitplane] = reconstructionSchemes[minIndex][3]; 
+          fourthPx[bitplane] = parseInt(reconstructionSchemes[minIndex][3]);
 	        
           imageData.data[i] = parseInt(firstPx.join(''), 2);
           imageData.data[i+4] = parseInt(secondPx.join(''), 2);
